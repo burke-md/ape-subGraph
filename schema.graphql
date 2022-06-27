@@ -1,6 +1,30 @@
-type ExampleEntity @entity {
+type Token @entity {
   id: ID!
-  count: BigInt!
-  owner: Bytes! # address
-  approved: Bytes! # address
+  tokenID: BigInt!
+  tokenURI: String!
+  ipfsURI: String!
+  image: String!
+  name: String!
+  description: String!
+  type: String!
+  updatedAtTimestamp: BigInt!
+  owner: User!
+  Clothes: String!
+  Mouth: String!
+  Eyes: String!
 }
+
+type User @entity {
+  id: ID!
+  tokens: [Token!]! @derivedFrom(field: "owner")
+}
+
+type _Schema_
+  @fulltext(
+    name: "covenSearch"
+    language: en
+    algorithm: rank
+    include: [{entity: "Token", fields:
+      [{ name: "name" }, { name: "Clothes" }, { name: "Mouth" }, { name: "Eyes" }
+    ] }]
+  )
